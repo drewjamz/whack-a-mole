@@ -40,12 +40,12 @@ static void gpio_enable_port (GPIO_TypeDef *gpio) {
 //   direction: One of INPUT (0b00) or OUTPUT (0b01).  Other modes are invalid.
 // Returns EE14Lib_ERR_INVALID_CONFIG for invalid direction value, otherwise
 // returns EE14Lib_Err_OK.
-EE14Lib_Err gpio_config_mode(EE14Lib_Pin pin, unsigned int mode)
+EE14Lib_Err gpio_config_direction(EE14Lib_Pin pin, unsigned int direction)
 {
     GPIO_TypeDef* port = g_GPIO_port[pin];
     uint8_t pin_offset = g_GPIO_pin[pin];
 
-    if(mode & ~0b11UL){ // Only bottom two bits are valid
+    if(direction & ~0b1UL){ // Only 0b00 and 0b01 are valid directions
         return EE14Lib_ERR_INVALID_CONFIG;
     }
 
@@ -53,7 +53,7 @@ EE14Lib_Err gpio_config_mode(EE14Lib_Pin pin, unsigned int mode)
     gpio_enable_port(port);
 
     port->MODER &= ~(0b11 << pin_offset*2); // Clear both mode bits
-    port->MODER |=  (mode << pin_offset*2);
+    port->MODER |=  (direction << pin_offset*2);
 
     return EE14Lib_Err_OK;
 }
@@ -77,47 +77,6 @@ EE14Lib_Err gpio_config_pullup(EE14Lib_Pin pin, unsigned int mode)
 
     port->PUPDR &= ~(0b11 << pin_offset*2); // Clear both mode bits
     port->PUPDR |=  (mode << pin_offset*2);
-
-    return EE14Lib_Err_OK;
-}
-
-// Configure the output type of a GPIO pin, either push/pull or open-drain.
-// A push-pull output is driven both high and low (connection to Vdd or GND),
-// while an open-drain input is driven only to ground, and left floating
-// otherwise.  A pullup (internal or external) is used to achieve the high value
-// when the output is not driven low.
-//   pin: A Nucleo pin ID (D2, A4, etc.)
-//   otype: Either PUSH_PULL (0b0) or OPEN_DRAIN (0b01)
-// Returns EE14Lib_ERR_INVALID_CONFIG for invalid otype value, otherwise
-// returns EE14Lib_Err_OK.
-EE14Lib_Err gpio_config_otype(EE14Lib_Pin pin, unsigned int otype)
-{
-    GPIO_TypeDef* port = g_GPIO_port[pin];
-    uint8_t pin_offset = g_GPIO_pin[pin];
-
-    if(otype & ~0b1UL){ // Only bottom bit is valid
-        return EE14Lib_ERR_INVALID_CONFIG;
-    }
-
-    port->OTYPER &= ~(0b1 << pin_offset); // Clear mode bit
-    port->OTYPER |=  (otype << pin_offset);
-
-    return EE14Lib_Err_OK;
-}
-
-
-// Configure the output speed of a GPIO pin.
-EE14Lib_Err gpio_config_ospeed(EE14Lib_Pin pin, unsigned int ospeed)
-{
-    GPIO_TypeDef* port = g_GPIO_port[pin];
-    uint8_t pin_offset = g_GPIO_pin[pin];
-
-    if(ospeed & ~0b11UL){ // Only bottom two bits are valid
-        return EE14Lib_ERR_INVALID_CONFIG;
-    }
-
-    port->OSPEEDR &= ~(0b11 << pin_offset*2); // Clear both speed bits
-    port->OSPEEDR |=  (ospeed << pin_offset*2);
 
     return EE14Lib_Err_OK;
 }

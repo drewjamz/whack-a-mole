@@ -4,6 +4,7 @@
  * January 2025
  */
 #include "stm32l432xx.h"
+#include "ee14lib.h"
 #include <stdbool.h>
 
 static void USART_Init (USART_TypeDef *USARTx, bool tx_en, bool rx_en,int baud);
@@ -105,17 +106,6 @@ void UART_write_byte (USART_TypeDef *USARTx, char data) {
 void USART_Delay(uint32_t us) {
     uint32_t time = 100*us/7;    
     while(--time);   
-}
-
-
-// Turn on the clock for a GPIO port.
-static void gpio_enable_port (GPIO_TypeDef *gpio) {
-    unsigned long field;
-    if (gpio==GPIOA)      field=RCC_AHB2ENR_GPIOAEN;
-    else if (gpio==GPIOB) field=RCC_AHB2ENR_GPIOBEN;
-    else if (gpio==GPIOC) field=RCC_AHB2ENR_GPIOCEN;
-    else 		  field=RCC_AHB2ENR_GPIOHEN;
-    RCC->AHB2ENR |= field;			// Turn on the GPIO clock
 }
 
 // Set a given GPIO pin to be a particular alternate-function.
