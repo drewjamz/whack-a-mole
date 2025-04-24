@@ -69,4 +69,6 @@ void serial_write(USART_TypeDef *USARTx, const char *buffer, int len);
 // Spin wait until we have a byte.
 char serial_read(USART_TypeDef *USARTx);
 
+void gpio_enable_port(GPIO_TypeDef *gpio);
+
 #endif

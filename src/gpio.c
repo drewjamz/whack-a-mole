@@ -25,7 +25,7 @@ static uint8_t g_GPIO_pin[D13+1] = {
 // Enables a GPIO port (A, B, C, or H) by setting the appropriate bit in the RCC
 // clock enable register.
 //   gpio: Pointer to GPIO port to enable, one of GPIOA, GPIOB, GPIOC, GPIOH
-static void gpio_enable_port (GPIO_TypeDef *gpio) {
+void gpio_enable_port (GPIO_TypeDef *gpio) {
     unsigned long field;
     if (gpio==GPIOA)      field=RCC_AHB2ENR_GPIOAEN;
     else if (gpio==GPIOB) field=RCC_AHB2ENR_GPIOBEN;
@@ -40,12 +40,12 @@ static void gpio_enable_port (GPIO_TypeDef *gpio) {
 //   direction: One of INPUT (0b00) or OUTPUT (0b01).  Other modes are invalid.
 // Returns EE14Lib_ERR_INVALID_CONFIG for invalid direction value, otherwise
 // returns EE14Lib_Err_OK.
-EE14Lib_Err gpio_config_direction(EE14Lib_Pin pin, unsigned int direction)
+EE14Lib_Err gpio_config_mode(EE14Lib_Pin pin, unsigned int mode)
 {
     GPIO_TypeDef* port = g_GPIO_port[pin];
     uint8_t pin_offset = g_GPIO_pin[pin];
 
-    if(direction & ~0b1UL){ // Only 0b00 and 0b01 are valid directions
+    if(mode & ~0b11UL){ // Only bottom two bits are valid
         return EE14Lib_ERR_INVALID_CONFIG;
     }
 
@@ -53,7 +53,7 @@ EE14Lib_Err gpio_config_direction(EE14Lib_Pin pin, unsigned int direction)
     gpio_enable_port(port);
 
     port->MODER &= ~(0b11 << pin_offset*2); // Clear both mode bits
-    port->MODER |=  (direction << pin_offset*2);
+    port->MODER |=  (mode << pin_offset*2);
 
     return EE14Lib_Err_OK;
 }

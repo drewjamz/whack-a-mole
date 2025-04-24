@@ -1,6 +1,4 @@
 #include "stm32l432xx.h"
-#include "i2c.c"
-#include "uart.c"
 #include "ee14lib.h"
 #include "timer.h"
 #include "display.h"

@@ -1,6 +1,7 @@
 #include "display.h"
-#include "timer.h"
 #include "ee14lib.h"
+#include "time.h"
+#include "stm32l432xx.h"
 
 // GPIO pins
 #define SR_DATA     D2

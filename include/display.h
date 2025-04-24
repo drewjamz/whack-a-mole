@@ -2,8 +2,6 @@
 #define DISPLAY_H
 
 #include <stdint.h>
-#include "gpio.c"
-#include "stm32l432xx.h"
 
 // Public function declarations
 void display_init(void);
