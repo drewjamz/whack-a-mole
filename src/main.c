@@ -6,13 +6,19 @@
 
 volatile uint8_t score = 0;
 
+//allows us to use printf
+int _write(int file, char *data, int len) {
+    serial_write(USART2, data, len);
+    return len;
+}
+
 int main() {
     SysTick_initialize();
     display_init();
 
     while (1) {
         //score logic
-        display_score(score);
+        //display_score(score);
     }
 }
 
