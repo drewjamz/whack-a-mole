@@ -2,6 +2,7 @@
 #include "ee14lib.h"
 #include "timer.h"
 #include "display.h"
+#include "cap.h"
 #include <stdio.h>
 
 volatile uint8_t score = 0;
@@ -13,13 +14,13 @@ int _write(int file, char *data, int len) {
 }
 
 int main() {
+    host_serial_init();
     SysTick_initialize();
     display_init();
+    config_cap();
+    config_gpio_interrupt();
 
-    while (1) {
-        //score logic
-        //display_score(score);
-    }
+    while (1) {}
 }
 
 // Game control functions
