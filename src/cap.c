@@ -73,6 +73,8 @@ void EXTI1_IRQHandler(){
     i2c_read(I2C1, CAP_ADR, &status, 1); // read the status
     
     printf("%i\n", status);
+
+    hit_mole = status;
     
     //clears interrupt bit
     uint8_t cmd[] = { 0x00, 0x00 };  

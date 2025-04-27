@@ -56,10 +56,8 @@ static void display_digit(uint8_t digit) {
 
 // Call this repeatedly in main to refresh both digits
 void display_score(uint8_t score_val) {
-    // uint8_t tens = score_val / 10;
-    // uint8_t ones = score_val % 10;
-    uint8_t tens = 1;
-    uint8_t ones = 4;
+    uint8_t tens = score_val / 10;
+    uint8_t ones = score_val % 10;
 
     // Tens digit
     gpio_write(DIGIT_2, 0);
