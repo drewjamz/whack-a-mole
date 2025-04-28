@@ -10,8 +10,6 @@
 
 void config_cap();
 void config_gpio_interrupt(void);
-// extern volatile int cap_interrupt_flag;
-// uint8_t cap_read_touch_status(void);
-int hit_mole;
+extern volatile int hit_mole;
 
 #endif

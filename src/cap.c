@@ -2,6 +2,8 @@
 #include "ee14lib.h"
 #include "timer.h"
 
+volatile int hit_mole = 0;
+
 void config_gpio_interrupt(void) {
     RCC->APB2ENR |= RCC_APB2ENR_SYSCFGEN;
     SYSCFG->EXTICR[0] &= ~(SYSCFG_EXTICR1_EXTI1);
