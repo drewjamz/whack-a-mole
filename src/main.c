@@ -23,7 +23,7 @@ int main() {
     
 
     while (1) {
-        display_score(score);
+        display_score(hit_mole);
         
         // if (hit_mole == active_mole) mole_hit();
         // else mole_miss();

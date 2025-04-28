@@ -18,6 +18,10 @@ void config_gpio_interrupt(void) {
 
 void config_cap() {
 
+    delay_ms(5000);
+    printf("DEBUG: config cap\n");
+
+
     i2c_init(I2C1, I2C_SCL, I2C_SDA); //400KHz mode
 
     delay_ms(20);
@@ -43,6 +47,7 @@ void config_cap() {
     unsigned char repeat[] = {0x28, 0x00};
     i2c_write(I2C1, CAP_ADR, repeat, 2);
 
+    
     //Does uh something i forget lowkey
     unsigned char buf2[] = {0x44, 0b01000001};
     i2c_write(I2C1, CAP_ADR, buf2, 2);
@@ -71,6 +76,13 @@ void EXTI1_IRQHandler(){
     uint8_t reg = 0x03;
     uint8_t status = 0;
 
+    //clears interrupt bit
+    uint8_t cmd[] = { 0x00, 0x00 };  
+    i2c_write(I2C1, CAP_ADR, cmd, 2);  
+
+    unsigned char recalibrate_cmd[] = {0x26, 0x1F}; 
+    i2c_write(I2C1, CAP_ADR, recalibrate_cmd, 2);
+
     i2c_write(I2C1, CAP_ADR, &reg, 1);  // point to status register
     i2c_read(I2C1, CAP_ADR, &status, 1); // read the status
     
@@ -78,10 +90,6 @@ void EXTI1_IRQHandler(){
 
     hit_mole = status;
     
-    //clears interrupt bit
-    uint8_t cmd[] = { 0x00, 0x00 };  
-    i2c_write(I2C1, CAP_ADR, cmd, 2);    
-
     EXTI->PR1 = EXTI_PR1_PIF1;         // clear EXTI interrupt
     printf("DEBUG: IRQ cleared\n");
 }

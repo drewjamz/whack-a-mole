@@ -4,8 +4,8 @@
 #include "stm32l432xx.h"
 
 // GPIO pins
-#define SR_DATA     A1
-#define SR_CLOCK    A2
+#define SR_DATA     D2
+#define SR_CLOCK    D3
 
 #define DIGIT_1     D9
 #define DIGIT_2     D10
