@@ -6,6 +6,7 @@
 #include <stdio.h>
 
 volatile uint8_t score = 0;
+volatile uint8_t active_mole = 0;
 
 //allows us to use printf
 int _write(int file, char *data, int len) {
@@ -20,7 +21,12 @@ int main() {
     config_cap();
     config_gpio_interrupt();
 
-    while (1) {}
+    while (1) {
+        // display_score(score);
+        
+        // if (hit_mole == active_mole) mole_hit();
+        // else mole_miss();
+    }
 }
 
 // Game control functions

@@ -2,11 +2,14 @@
 #include "ee14lib.h"
 #include "timer.h"
 
+volatile int hit_mole = 0;
+
 void config_gpio_interrupt(void) {
     RCC->APB2ENR |= RCC_APB2ENR_SYSCFGEN;
     SYSCFG->EXTICR[0] &= ~(SYSCFG_EXTICR1_EXTI1);
     SYSCFG->EXTICR[0] |= SYSCFG_EXTICR1_EXTI1_PB;
-    EXTI->FTSR1 |= (1 << 1);
+    EXTI->FTSR1 |= ~(1 << 1);   // Disable falling edge trigger
+    EXTI->RTSR1 |= (1 << 1);    // Enable rising edge trigger
     EXTI->IMR1 |= (1 << 1);
     NVIC_SetPriority(EXTI1_IRQn, 2);
     NVIC_EnableIRQ(EXTI1_IRQn);
@@ -16,9 +19,8 @@ void config_gpio_interrupt(void) {
 
 void config_cap() {
     i2c_init(I2C1, I2C_SCL, I2C_SDA); //400KHz mode
+    delay_ms(50);
 
-    delay_ms(20);
-    
     //Enable Sensor Input Enable Registers CS1_EN - CS5_EN
     unsigned char buf[] = {0x21, 0x1F};
     i2c_write(I2C1, CAP_ADR, buf, 2);
@@ -31,16 +33,16 @@ void config_cap() {
     unsigned char link[] = {0x71, 0xFF};
     i2c_write(I2C1, CAP_ADR, link, 2);
 
-    //LEDs open drain
+    //Link touch inputs to LEDs
     unsigned char behavior[] = {0x72, 0x1F};
     i2c_write(I2C1, CAP_ADR, behavior, 2);
 
-    //Link touch inputs to LEDs
+    //Turns off repeat rate
     unsigned char repeat[] = {0x28, 0x00};
     i2c_write(I2C1, CAP_ADR, repeat, 2);
 
-    //Does uh something i forget lowkey
-    unsigned char buf2[] = {0x44, 0b01000001};
+    //Changes ALERT# to Push-Pull Active High and turns off release interrupt
+    unsigned char buf2[] = {0x44, 0b00000001};
     i2c_write(I2C1, CAP_ADR, buf2, 2);
 
     //Sets sensitivity multiplier to 1x and leaves base same
@@ -54,8 +56,6 @@ void config_cap() {
     delay_ms(600);
 
     gpio_config_mode(IRQ, INPUT);
-    gpio_config_pullup(IRQ, PULL_UP);
-
     //gpio_config_mode(D11, OUTPUT); //test led pin
 
     printf("DEBUG: touch capacitance sensor configured\n");
@@ -72,7 +72,7 @@ void EXTI1_IRQHandler(){
     i2c_write(I2C1, CAP_ADR, &reg, 1);  // point to status register
     i2c_read(I2C1, CAP_ADR, &status, 1); // read the status
     
-    printf("%i\n", status);
+    printf("status = %i\n", status);
     
     //clears interrupt bit
     uint8_t cmd[] = { 0x00, 0x00 };  
