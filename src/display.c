@@ -1,6 +1,6 @@
 #include "display.h"
 #include "ee14lib.h"
-#include "time.h"
+#include "timer.h"
 #include "stm32l432xx.h"
 
 // GPIO pins
