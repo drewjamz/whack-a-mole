@@ -20,18 +20,20 @@ int main() {
     display_init();
     config_cap();
     config_gpio_interrupt();
+    
 
     while (1) {
         display_score(score);
         
-        if (hit_mole == active_mole) mole_hit();
-        else mole_miss();
+        // if (hit_mole == active_mole) mole_hit();
+        // else mole_miss();
     }
 }
 
 // Game control functions
 void mole_hit(void) {
-    if (score < 99) score++;
+    if (score <= 99) score++;
+    else score = 0;
 }
 
 void mole_miss(void) {

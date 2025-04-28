@@ -17,9 +17,11 @@ void config_gpio_interrupt(void) {
 }
 
 void config_cap() {
+
     i2c_init(I2C1, I2C_SCL, I2C_SDA); //400KHz mode
 
     delay_ms(20);
+    
     
     //Enable Sensor Input Enable Registers CS1_EN - CS5_EN
     unsigned char buf[] = {0x21, 0x1F};

@@ -2,6 +2,7 @@
     "files.associations": {
         "display.h": "c",
         "stm32l432xx.h": "c",
-        "ee14lib.h": "c"
+        "ee14lib.h": "c",
+        "cap.h": "c"
     }
 }

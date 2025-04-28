@@ -6,7 +6,6 @@
 // GPIO pins
 #define SR_DATA     A1
 #define SR_CLOCK    A2
-#define SR_CLEAR    A0
 
 #define DIGIT_1     D9
 #define DIGIT_2     D10
@@ -34,9 +33,6 @@ void display_init(void) {
 
     gpio_write(DIGIT_1, 0);
     gpio_write(DIGIT_2, 0);
-
-    gpio_config_mode(SR_CLEAR, OUTPUT);
-    gpio_write(SR_CLEAR, 1);
 
 }
 
