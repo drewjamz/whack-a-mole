@@ -61,8 +61,6 @@ void config_cap() {
     printf("DEBUG: touch capacitance sensor configured\n");
 }
 
-volatile int cap_interrupt_flag = 0; // global flag
-
 void EXTI1_IRQHandler(){
 
     printf("DEBUG: IRQ Handler Entered\n");
