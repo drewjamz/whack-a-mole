@@ -19,7 +19,7 @@ void config_gpio_interrupt(void) {
 void config_cap() {
 
     delay_ms(5000);
-    printf("DEBUG: config cap\n");
+    // printf("DEBUG: config cap\n");
 
 
     i2c_init(I2C1, I2C_SCL, I2C_SDA); //400KHz mode
@@ -67,12 +67,12 @@ void config_cap() {
 
     //gpio_config_mode(D11, OUTPUT); //test led pin
 
-    printf("DEBUG: touch capacitance sensor configured\n");
+    // printf("DEBUG: touch capacitance sensor configured\n");
 }
 
 void EXTI1_IRQHandler(){
 
-    printf("DEBUG: IRQ Handler Entered\n");
+    // printf("DEBUG: IRQ Handler Entered\n");
     uint8_t reg = 0x03;
     uint8_t status = 0;
 
@@ -91,5 +91,5 @@ void EXTI1_IRQHandler(){
     hit_mole = status;
     
     EXTI->PR1 = EXTI_PR1_PIF1;         // clear EXTI interrupt
-    printf("DEBUG: IRQ cleared\n");
+    // printf("DEBUG: IRQ cleared\n");
 }
