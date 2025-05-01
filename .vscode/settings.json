@@ -3,6 +3,7 @@
         "display.h": "c",
         "stm32l432xx.h": "c",
         "ee14lib.h": "c",
-        "cap.h": "c"
+        "cap.h": "c",
+        "sertimer.h": "c"
     }
 }

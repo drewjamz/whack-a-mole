@@ -1,8 +1,10 @@
 #include "stm32l432xx.h"
 #include "ee14lib.h"
 #include "timer.h"
+#include "sertimer.h"
 #include "display.h"
 #include "cap.h"
+#include "servo.h"
 #include <stdio.h>
 
 volatile uint8_t score = 0;
@@ -29,10 +31,12 @@ int main() {
     config_cap();
     config_gpio_interrupt();
     srand(systick_count);
+    servo_init();
 
     while (1) {
         switch (state) {
             case STATE_MENU:
+                servo_init();
                 score = 0;
                 display_score(score);
                 if (hit_mole) {
@@ -43,16 +47,19 @@ int main() {
 
             case STATE_GAME:
                 hit_mole = 0;
-                uint8_t n = (rand() % 5) - 1;
+                uint8_t n = (rand() % 5);
                 active_mole = 1 << n;  // Set active mole in 2^n form
 
-                printf("Active mole: 0x%02X\n", active_mole);
+                printf("Active mole: %02X\n", n);
+                activate_mole(n);
 
                 //CANNOT USE DELAY HERE: display score must always run.
                 uint32_t start = systick_count;
                 while (systick_count - start < 5000) {
                     display_score(score);
                 }
+
+                deactivate_mole(n);
 
                 printf("Hit mole: 0x%02X\n", hit_mole);
                 printf("\n");
@@ -75,7 +82,7 @@ int main() {
 
             case STATE_GAME_OVER: 
                 start = systick_count;
-                while (systick_count - start < 10000) {
+                while (systick_count - start < 5000) {
                     display_score(score);  // show final score
                 }
                 state = STATE_MENU;

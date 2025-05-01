@@ -5,7 +5,7 @@
 
 // GPIO pins
 #define SR_DATA     D2
-#define SR_CLOCK    D3
+#define SR_CLOCK    D11
 
 #define DIGIT_1     D9
 #define DIGIT_2     D10
