@@ -5,10 +5,10 @@
 
 // GPIO pins
 #define SR_DATA     D2
-#define SR_CLOCK    D11
+#define SR_CLOCK    D3
 
-#define DIGIT_1     D9
-#define DIGIT_2     D10
+#define DIGIT_1     D10
+#define DIGIT_2     D11
 
 static const uint8_t segment_map[10] = {
     0b11111100,  // 0

@@ -50,7 +50,7 @@ int main() {
                 uint8_t n = (rand() % 5);
                 active_mole = 1 << n;  // Set active mole in 2^n form
 
-                printf("Active mole: %02X\n", n);
+                printf("Active mole: %d\n", active_mole);
                 activate_mole(n);
 
                 //CANNOT USE DELAY HERE: display score must always run.
@@ -95,4 +95,5 @@ int main() {
 void mole_hit(void) {
     if (score <= 99) score++;
     else score = 0;
+
 }
