@@ -55,7 +55,7 @@ int main() {
 
                 //CANNOT USE DELAY HERE: display score must always run.
                 uint32_t start = systick_count;
-                while (systick_count - start < 5000) {
+                while (systick_count - start < 3000) {
                     display_score(score);
                 }
 
